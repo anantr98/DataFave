@@ -66,7 +66,14 @@ top_ten <- categories[1:10,]
 bottom_ten <- categories[34:43,]
   
  
-  
+transactions <- read.csv(file = "transactions.csv")
+
+new_transactions <- transactions %>%
+  group_by(month, year) %>%
+  mutate(count = n()) %>%
+  select(year, month, count)
+
+new_transactions <- unique(new_transactions)  
   
   
   
@@ -147,14 +154,7 @@ ggplot(transactions_2019) +
 
 
 #What trends do you notice for the store with respect to transactions?
-transactions <- read.csv(file = "transactions.csv")
 
-new_transactions <- transactions %>%
-  group_by(month, year) %>%
-  mutate(count = n()) %>%
-  select(year, month, count)
-
-new_transactions <- unique(new_transactions)
 
 #yearly transactions
 tot_transactions_2016 = sum(transactions_2016[, "count"])
