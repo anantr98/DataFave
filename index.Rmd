@@ -1,0 +1,175 @@
+---
+title: "Grocery Retail Sales Data Report"
+authors: "Anant Rajeev, Arnav Gupta, Himani Nijhawan, Pranav Vasan"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library("knitr")
+source("graphs.R")
+```
+
+## Summary Information
+This report analyzes the data of grocery retail sales, ranging from March, 2018 to October, 2019. The following analyses provide various insights, such as the highest selling products, lowest selling products, highest profit month, lowest profit month, as well as other such data that seek to find the best ways and times for optimal profit. Using this information, grocery stores can decide better ways to increase their monthly and yearly profits and decrease their losses.
+
+## Machine Learning Model
+For reference on how we configured our dataset, implemented our machine learning algorithms, and made our predictions, look [here](https://anantr98.github.io/DataFave/ML.html).
+
+## Highest Selling Products
+
+The following table illustrates the highest selling products by month and category: 
+```{r highest_selling_products, echo=FALSE}
+kable(highest_selling_product)
+```
+
+
+## Lowest Selling Products
+
+The following table illustrates the lowest selling products by month and category:
+
+```{r lowest_selling_products, echo=FALSE}
+kable(lowest_selling)
+```
+
+
+
+## Highest Profit Month
+
+The highest profit month was `r highest_profit_month`.
+
+## Lowest Profit Month
+
+The lowest profit month was `r lowest_profit_month`.
+
+
+## Top 3 Most Profitable Categories
+
+The top 3 most profitable categories from the dataset are represented by the following bar graph:
+```{r most_profitable_categories, echo=FALSE}
+ggplot(bar_graph_positive) +
+  geom_col(mapping = aes(x = CATEGORY, y = average_profit), fill = " dark orange") +
+  labs(
+    title = "Top 3 Most Profitable Categories",
+    x = "Category",
+    y = "Average Profit"
+  )
+```
+
+This bar chart shows that the three most profitable products are flowers, other fruits, and tropical fruits. Therefore, one of the most efficient ways to reduce losses and increase profits would be to sell more of these products that bring in the most revenue. This way the grocery stores could balance out the losses with an increased amount of profit. 
+
+## Top 3 Least Profitable Categories
+
+The top 3 least profitable categories from the dataset are represented by the following bar graph:
+
+```{r least_profitable_categories, echo=FALSE}
+ggplot(bar_graph_negative) +
+  geom_col(mapping = aes(x = CATEGORY, y = average_profit), fill = "dark red") +
+  labs(
+    title = "Top 3 Least Profitable Categories",
+    x = "Category",
+    y = "Average Profit"
+  )
+```
+
+This bar chart shows that the three least profitable categories are Avocadoes, Bananas, and Pastas. Therefore, another efficient way to reduce losses is to decrease the number of units of each of these products purchased for selling. This way, the grocery stores would be able to still make a profit off of these items, while not having too much in stock to where they are not making enough profit. Another possible solution would be to strategically place these least profitable items towards the front of the grocery store and the most profitable items towards the back. Studies show that consumers often are more likely to buy products that they would otherwise not buy if they were easier to find. For more information on ideal store geography, refer to this [link](https://www.realsimple.com/food-recipes/shopping-storing/more-shopping-storing/grocery-store-layout).
+
+
+
+## Top 10 by Average Unit Price Sell
+
+The following table shows the top 10 categories by unit price sell:
+
+```{r top_10_unit_price_sell, echo=FALSE}
+kable(top_ten, col.names = c("Categories", "Average Unit Price Sell"))
+
+```
+
+
+## Bottom 10 by Average Unit Price Sell
+
+The following table shows the bottom 10 categories by unit price sell:
+
+```{r bottom_ten_unit_price_sell, echo=FALSE}
+kable(bottom_ten, col.names = c("Categories", "Average Unit Price Sell"))
+
+```
+
+
+
+## Individual Year Transactions
+```{r transactions, echo=FALSE}
+ggplot(transactions_2016) +
+  geom_col(mapping = aes(x = month, y = count), fill = "pink") +
+  labs(
+    title = "2016 Yearly Transactions",
+    x = "Months",
+    y = "Number of Transactions"
+  )
+```
+
+```{r 2017, echo=FALSE}
+ggplot(transactions_2017) +
+  geom_col(mapping = aes(x = month, y = count), fill = "orange") +
+  labs(
+    title = "2017 Yearly Transactions",
+    x = "Months",
+    y = "Number of Transactions"
+  )
+```
+
+```{r 2018, echo=FALSE}
+ggplot(transactions_2018) +
+  geom_col(mapping = aes(x = month, y = count), fill = "red") +
+  labs(
+    title = "2018 Yearly Transactions",
+    x = "Months",
+    y = "Number of Transactions"
+  )
+```
+
+```{r 2019, echo=FALSE}
+ggplot(transactions_2019) +
+  geom_col(mapping = aes(x = month, y = count), fill = "dark red") +
+  labs(
+    title = "2019 Yearly Transactions",
+    x = "Months",
+    y = "Number of Transactions"
+  )
+```
+
+
+2016: We can see that there were many more transactions towards the end of the year (the last six months had more transactions that the first three, note: January-February is not recorded in this graph). 
+2017: These trends are the exact opposite from 2016. We can see that the total number of transactions were greater in the first three months, and steadily decreased after. They slightly increased 
+2018: These trends are similar to those of 2017. January has the highest number of transactions, and they decline afterwards. 
+2019: These trends to not line up with any previous year. They are more skewed, but we can see that the total number of transactions started to decline in the last few months.
+
+```{r line_graph, echo=FALSE}
+#line graph: time vs. profit
+plot(profit[, "TOTAL_PRICESELL"], type = "l", col = "pink", xlab = "Month", ylab = "Dollars",
+     main = "Monthly Trends: 03/2016 to 10/2019")
+
+lines(profit[, "TOTAL_PRICEBUY"], type = "l", col = "orange")
+lines(profit[, "PROFIT"], type = "l", col = "dark red")
+
+legend("topright", legend = c("Total Price Buy", 'Total Price Sell', 'Total Profit'),
+       fill, col = c("orange", "pink", "dark red"), lwd = 2)
+```
+
+
+From the bar graph above, we can see the sum of total yearly transactions of 2016, 2017, 2018, and 2019. It is important to note that the transactions for the months January-March for 2016 and the November-December for 2019 are not included. Even with these missing months, we can see that 2016 has the highest number of transactions (which we can loosely translate to highest number of customers). The graph shows that there is a decline in total transactions for each year. It is important for this grocery store to consider marketing their store and their products to increase their total transactions and total customers in the future. They could even revisit their marketing strategies from 2016 and re-implement them.
+
+
+
+## Yearly Transactions
+
+```{r yearly_transactions, echo=FALSE}
+ggplot(yearly_transactions) +
+  geom_col(mapping = aes(x = years, y = total.transactions), fill = "maroon") +
+  labs(
+    title = "Total Yearly Transactions",
+    x = "Years",
+    y = "Number of Transactions"
+  )
+```
+
+This line graph analyzes the profits, prices of products bought, and prices of products sold per month. This grocery store can use this graph to visualize their progress and which months did better and worse. From this graph, they can see clear peaks and dips, and make sure to structure their grocery store marketing, sales, and other aspects from those previous months to best maximize profits.
